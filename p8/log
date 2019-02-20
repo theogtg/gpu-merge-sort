@@ -1,0 +1,63 @@
+
+***log of all timings found for different array sizes***
+-------------------------------------------------------------------------------------------------
+arrays consist of random integers ranging from 0-1000
+test data using (32,1,1) threads per block
+				and (8,1,1) blocks per grid
+ran the program 10 times with each array size and put the range of the times in the grid below
+-------------------------------------------------------------------------------------------------
+ ________with mem allocation/copy for gpu___________
+|**array size**|**gpu timing(ms)**|**cpu timing(ms)*|
+|  100         | 90.028 - 120.243 |  0.007 - 0.008  |
+|  1,000       | 89.523 - 121.31  |  0.060 - 0.061  |
+|  10,000      | 89.065 - 119.409 |  0.718 - 0.722  |
+|  100,000     | 87.487 - 94.892  |  8.473 - 8.522  |
+|  1,000,000   | 86.537 - 92.396  | 96.633 - 98.731 | gpu sort finally faster :)
+|  2,000,000   | 86.961 - 91.799  | 205.40 - 234.25 |
+|  2,095,051   | 87.515 - 93.076  | 244.06 - 244.52 | occasional core dump by cpu
+|  2,095,052   | 87.931 - 93.044  |    seg fault    | machine runs out of ram?
+|  3,000,000   | 88.091 - 93.640  |    seg fault    |
+|  5,000,000   | 89.257 - 95.142  |    seg fault    |
+|  8,388,608   | 92.065 - 101.296 |    seg fault    |
+|  8,388,609   |floating point ex.|    seg fault    | machine runs out of gpu memory?
+|______________|__________________|_________________|
+
+ _______without mem allocation/copy for gpu_________
+|**array size**|**gpu timing(ms)**|**cpu timing(ms)*|
+|  100         |   0.023 - 0.024  |  0.007 - 0.008  |
+|  1,000       |   0.029 - 0.031  |  0.060 - 0.061  | gpu sort faster :)
+|  10,000      |   0.037 - 0.039  |  0.718 - 0.722  |
+|  100,000     |   0.043 - 0.044  |  8.473 - 8.522  |
+|  1,000,000   |   0.048 - 0.054  | 96.633 - 98.731 | 
+|  2,000,000   |   0.050 - 0.052  | 205.40 - 234.25 |
+|  2,095,051   |   0.050 - 0.052  | 244.06 - 244.52 | occasional core dump by cpu
+|  2,095,052   |   0.050 - 0.052  |    seg fault    | machine runs out of ram?
+|  3,000,000   |   0.053 - 0.054  |    seg fault    |
+|  5,000,000   |   0.053 - 0.056  |    seg fault    |
+|  8,388,608   |   0.054 - 0.055  |    seg fault    |
+|  8,388,609   |floating point ex.|    seg fault    | machine runs out of gpu memory?
+|______________|__________________|_________________|
+
+***device query of machine used:***
+Cuda Device 0
+Name:                          GeForce GTX 1080
+Major revision number:         6
+Minor revision number:         1
+Total global memory:           8503885824
+Total shared memory per block: 49152
+Total registers per block:     65536
+Warp size:                     32
+Maximum memory pitch:          2147483647
+Maximum threads per block:     1024
+Maximum dimension 0 of block:  1024
+Maximum dimension 1 of block:  1024
+Maximum dimension 2 of block:  64
+Maximum dimension 0 of grid:   2147483647
+Maximum dimension 1 of grid:   65535
+Maximum dimension 2 of grid:   65535
+Clock rate:                    1733500
+Total constant memory:         65536
+Texture alignment:             512
+Concurrent copy and execution: True
+Number of multiprocessors:     20
+Kernel execution timeout:      True
